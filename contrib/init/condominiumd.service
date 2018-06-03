@@ -1,0 +1,26 @@
+[Unit]
+Description=Condominium's distributed currency daemon
+After=network.target
+
+[Service]
+User=condominium
+Group=condominium
+
+Type=forking
+PIDFile=/var/lib/condominiumd/condominiumd.pid
+
+ExecStart=/usr/bin/condominiumd -daemon -pid=/var/lib/condominiumd/condominiumd.pid \
+          -conf=/etc/condominium/condominium.conf -datadir=/var/lib/condominiumd
+
+ExecStop=-/usr/bin/condominium-cli -conf=/etc/condominium/condominium.conf \
+         -datadir=/var/lib/condominiumd stop
+
+Restart=always
+PrivateTmp=true
+TimeoutStopSec=60s
+TimeoutStartSec=2s
+StartLimitInterval=120s
+StartLimitBurst=5
+
+[Install]
+WantedBy=multi-user.target

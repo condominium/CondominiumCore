@@ -1,0 +1,30 @@
+<!DOCTYPE RCC><RCC version="1.0">
+    <qresource prefix="/translations">
+        <file alias="bg">locale/condominium_bg.qm</file>
+        <file alias="ca">locale/condominium_ca.qm</file>
+        <file alias="cs">locale/condominium_cs.qm</file>
+        <file alias="da">locale/condominium_da.qm</file>
+        <file alias="de">locale/condominium_de.qm</file>
+        <file alias="en">locale/condominium_en.qm</file>
+        <file alias="en_US">locale/condominium_en_US.qm</file>
+        <file alias="es">locale/condominium_es.qm</file>
+        <file alias="fi">locale/condominium_fi.qm</file>
+        <file alias="fr_FR">locale/condominium_fr_FR.qm</file>
+        <file alias="hr">locale/condominium_hr.qm</file>
+        <file alias="it">locale/condominium_it.qm</file>
+        <file alias="ja">locale/condominium_ja.qm</file>
+        <file alias="ko_KR">locale/condominium_ko_KR.qm</file>
+        <file alias="nl">locale/condominium_nl.qm</file>
+        <file alias="pl">locale/condominium_pl.qm</file>
+        <file alias="pt">locale/condominium_pt.qm</file>
+        <file alias="pt_BR">locale/condominium_pt_BR.qm</file>
+        <file alias="ro_RO">locale/condominium_ro_RO.qm</file>
+        <file alias="ru">locale/condominium_ru.qm</file>
+        <file alias="sk">locale/condominium_sk.qm</file>
+        <file alias="sv">locale/condominium_sv.qm</file>
+        <file alias="tr">locale/condominium_tr.qm</file>
+        <file alias="uk">locale/condominium_uk.qm</file>
+        <file alias="zh_CN">locale/condominium_zh_CN.qm</file>
+        <file alias="zh_TW">locale/condominium_zh_TW.qm</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,67 @@
+#!/bin/bash
+#
+#  condominiumd The Condominium core server.
+#
+#
+# chkconfig: 345 80 20
+# description: condominiumd
+# processname: condominiumd
+#
+
+# Source function library.
+. /etc/init.d/functions
+
+# you can override defaults in /etc/sysconfig/condominiumd, see below
+if [ -f /etc/sysconfig/condominiumd ]; then
+        . /etc/sysconfig/condominiumd
+fi
+
+RETVAL=0
+
+prog=condominiumd
+# you can override the lockfile via BITCOIND_LOCKFILE in /etc/sysconfig/condominiumd
+lockfile=${BITCOIND_LOCKFILE-/var/lock/subsys/condominiumd}
+
+# condominiumd defaults to /usr/bin/condominiumd, override with BITCOIND_BIN
+bitcoind=${BITCOIND_BIN-/usr/bin/condominiumd}
+
+# condominiumd opts default to -disablewallet, override with BITCOIND_OPTS
+bitcoind_opts=${BITCOIND_OPTS}
+
+start() {
+    echo -n $"Starting $prog: "
+    daemon $DAEMONOPTS $bitcoind $bitcoind_opts
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && touch $lockfile
+    return $RETVAL
+}
+
+stop() {
+    echo -n $"Stopping $prog: "
+    killproc $prog
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && rm -f $lockfile
+    return $RETVAL
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status $prog
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    *)
+        echo "Usage: service $prog {start|stop|status|restart}"
+        exit 1
+        ;;
+esac

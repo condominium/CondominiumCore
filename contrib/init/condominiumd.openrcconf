@@ -1,0 +1,26 @@
+# /etc/conf.d/condominiumd: config file for /etc/init.d/condominiumd
+
+# Config file location
+#BITCOIND_CONFIGFILE="/etc/condominium/condominium.conf"
+
+# What directory to write pidfile to?  (created and owned by $BITCOIND_USER)
+#BITCOIND_PIDDIR="/var/run/condominiumd"
+
+# What filename to give the pidfile
+#BITCOIND_PIDFILE="${BITCOIND_PIDDIR}/condominiumd.pid"
+
+# Where to write condominiumd data (be mindful that the blockchain is large)
+#BITCOIND_DATADIR="/var/lib/condominiumd"
+
+# User and group to own condominiumd process
+#BITCOIND_USER="condominium"
+#BITCOIND_GROUP="condominium"
+
+# Path to condominiumd executable
+#BITCOIND_BIN="/usr/bin/condominiumd"
+
+# Nice value to run condominiumd under
+#BITCOIND_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+BITCOIND_OPTS=""

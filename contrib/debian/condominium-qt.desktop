@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Condominium
+Comment=Condominium P2P Cryptocurrency
+Comment[fr]=Condominium, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=Condominium, eşten eşe kriptografik sanal para birimi
+Exec=condominium-qt %u
+Terminal=false
+Type=Application
+Icon=condominium128
+MimeType=x-scheme-handler/condominium;
+Categories=Office;Finance;
