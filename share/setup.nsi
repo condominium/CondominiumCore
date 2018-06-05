@@ -5,7 +5,7 @@ SetCompressor /SOLID lzma
 
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)"
-!define VERSION 1.0.0
+!define VERSION 1.1.0
 !define COMPANY "Condominium Core project"
 !define URL https://www.condominium.org
 

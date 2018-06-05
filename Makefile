@@ -201,7 +201,8 @@ am__DIST_COMMON = $(srcdir)/Makefile.in \
 	$(top_srcdir)/src/config/condominium-config.h.in \
 	$(top_srcdir)/src/test/buildenv.py.in COPYING INSTALL \
 	build-aux/compile build-aux/config.guess build-aux/config.sub \
-	build-aux/install-sh build-aux/ltmain.sh build-aux/missing
+	build-aux/depcomp build-aux/install-sh build-aux/ltmain.sh \
+	build-aux/missing
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -277,7 +278,7 @@ CFLAGS = -pipe -O2
 CLIENT_VERSION_BUILD = 0
 CLIENT_VERSION_IS_RELEASE = true
 CLIENT_VERSION_MAJOR = 1
-CLIENT_VERSION_MINOR = 0
+CLIENT_VERSION_MINOR = 1
 CLIENT_VERSION_REVISION = 0
 COMPARISON_TOOL_REORG_TESTS = 0
 COPYRIGHT_YEAR = 2017
@@ -361,10 +362,10 @@ OTOOL64 =
 PACKAGE = condominium
 PACKAGE_BUGREPORT = www.condominium.org
 PACKAGE_NAME = Condominium Core
-PACKAGE_STRING = Condominium Core 1.0.0
+PACKAGE_STRING = Condominium Core 1.1.0
 PACKAGE_TARNAME = condominium
 PACKAGE_URL = 
-PACKAGE_VERSION = 1.0.0
+PACKAGE_VERSION = 1.1.0
 PATH_SEPARATOR = :
 PKG_CONFIG = /usr/bin/pkg-config --static
 PKG_CONFIG_LIBDIR = 
@@ -415,7 +416,7 @@ TIFFCP =
 UIC = /home/mini/condominium/depends/i686-w64-mingw32/share/../native/bin/uic
 USE_QRCODE = 
 USE_UPNP = 
-VERSION = 1.0.0
+VERSION = 1.1.0
 WINDOWS_BITS = 32
 WINDRES = /usr/bin/i686-w64-mingw32-windres
 X11XCB_CFLAGS = 

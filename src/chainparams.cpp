@@ -121,9 +121,9 @@ public:
         nMaxMoneyOut = 2000000000 * COIN;
 
         /** Height or Time Based Activations **/
-        nLastPOWBlock = 1500;
+        nLastPOWBlock = 600;
         nModifierUpdateBlock = 999999999;
-        nZerocoinStartHeight = 1501;
+        nZerocoinStartHeight = 601;
         nAccumulatorStartHeight = 1;
         nZerocoinStartTime = 1527974340; // 14 - apr - 2018
         nBlockEnforceSerialRange = 1; //Enforce serial range starting this block
@@ -135,7 +135,7 @@ public:
          * Build the genesis block. Note that the output of the genesis coinbase cannot
          * be spent as it did not originally exist in the database.
          *
-            genesis.nTime = 1527974340 
+            genesis.nTime = 1527974340
             genesis.nNonce = 236551
             genesis.nVersion = 1
             genesis.GetHash = 000003f46e57c04e31374710022a6685abea12cb99960dfe96eaaa430edc670f
