@@ -60,43 +60,66 @@ struct CNodeStateStats;
 inline int64_t GetMstrNodCollateral(int nHeight){
 
 
-    if(nHeight < 600)
-    {
-      return 500;
-    }
-    else if(nHeight >= 600 && nHeight < 5000)
-    {
-      return 1000;
-    }
-    else if(nHeight >= 5000 && nHeight < 9000)
-    {
-      return 2000;
-    }
-    else if(nHeight >= 9000 && nHeight < 14000)
-    {
-      return 3000;
-    }
-    else if(nHeight >= 14000 && nHeight < 19000)
-    {
-      return 5000;
-    }
-    else if(nHeight >= 19000 && nHeight < 25000)
-    {
-      return 10000;
-    }
-    else if(nHeight >= 25000 && nHeight < 33000)
-    {
-      return 25000;
-    }
-    else if(nHeight >= 33000 && nHeight < 200000)
-    {
-      return 50000;
-    }
-    else
-    {
-      return 100000;
-    }
-
+      if(nHeight < 600)
+      {
+        return 500;
+      }
+      else if(nHeight >= 600 && nHeight < 5000)
+      {
+        return 1000;
+      }
+      else if(nHeight >= 5000 && nHeight < 9000)
+      {
+        return 2000;
+      }
+      else if(nHeight >= 9000 && nHeight < 14000)
+      {
+        return 3000;
+      }
+      else if(nHeight >= 14000 && nHeight < 19000)
+      {
+        return 5000;
+      }
+      else if(nHeight >= 19000 && nHeight < 25000)
+      {
+        return 10000;
+      }
+      else if(nHeight >= 25000 && nHeight < 30500)
+      {
+        return 25000;
+      }
+      else if(nHeight >= 30500 && nHeight < 45000)
+      {
+        return 30000;
+      }
+      else if(nHeight >= 45000 && nHeight < 75000)
+      {
+        return 35000;
+      }
+      else if(nHeight >= 75000 && nHeight < 500000)
+      {
+        return 40000;
+      }
+      else if(nHeight >= 500000 && nHeight < 1000000)
+      {
+        return 50000;
+      }
+      else if(nHeight >= 1000000 && nHeight < 2000000)
+      {
+        return 55000;
+      }
+      else if(nHeight >= 2000000 && nHeight < 5000000)
+      {
+        return 60000;
+      }
+      else if(nHeight >= 5000000 && nHeight < 10000000)
+      {
+        return 65000;
+      }
+      else
+      {
+        return 70000;
+      }
 
 }
 /** Default for -blockmaxsize and -blockminsize, which control the range of sizes the mining code will create **/
