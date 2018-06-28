@@ -13,9 +13,9 @@ else
     exit 1
 fi
 
-DESC="375bd1e"
-SUFFIX="1.2.0.0"
-LAST_COMMIT_DATE="2018-06-03 02:26:30 +0200"
+DESC="1.2.1.0"
+SUFFIX=""
+LAST_COMMIT_DATE=""
 if [ -e "$(which git 2>/dev/null)" -a "$(git rev-parse --is-inside-work-tree 2>/dev/null)" = "true" ]; then
     # clean 'dirty' status of touched files that haven't been modified
     git diff >/dev/null 2>/dev/null

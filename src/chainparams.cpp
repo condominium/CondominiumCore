@@ -118,7 +118,7 @@ public:
         nTargetSpacing = 1 * 60;  // Condominium: 60 Seconds
         nMaturity = 49;
         nMasternodeCountDrift = 20;
-        nMaxMoneyOut = 62000000 * COIN;
+        nMaxMoneyOut = 3500000000 * COIN;
 
         /** Height or Time Based Activations **/
         nLastPOWBlock = 600;

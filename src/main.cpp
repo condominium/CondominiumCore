@@ -2142,32 +2142,40 @@ int64_t GetBlockValue(int nHeight)
           nSubsidy = 1000 * COIN;
       } else if (nHeight <= 30500 && nHeight > 25000) {
           nSubsidy = 2500 * COIN;
-      } else if (nHeight <= 35000 && nHeight > 30500) {  // fork happens
+      } else if (nHeight <= 35000 && nHeight > 30500) {  // fork happened
           nSubsidy = 2 * COIN;
-      } else if (nHeight <= 45000 && nHeight > 35000) {
-          nSubsidy = 500 * COIN;
-      } else if (nHeight <= 52000 && nHeight > 45000) {
-          nSubsidy = 2 * COIN;
-      } else if (nHeight <= 75000 && nHeight > 52000) {
-          nSubsidy = 250 * COIN;
-      } else if (nHeight <= 100000 && nHeight > 75000) {
-          nSubsidy = 2 * COIN;
-      } else if (nHeight <= 500000 && nHeight > 100000) {
-          nSubsidy = 20 * COIN;
+      } else if (nHeight <= 50000 && nHeight > 35000) {  // another fork will happen at 35k
+          nSubsidy = 2000 * COIN;
+      } else if (nHeight <= 75000 && nHeight > 50000) {
+          nSubsidy = 3000 * COIN;
+      } else if (nHeight <= 150000 && nHeight > 75000) {
+          nSubsidy = 4000 * COIN;
+      } else if (nHeight <= 300000 && nHeight > 150000) {
+          nSubsidy = 5000 * COIN;
+      } else if (nHeight <= 500000 && nHeight > 300000) {
+          nSubsidy = 6000 * COIN;
       } else if (nHeight <= 1000000 && nHeight > 500000) {
-          nSubsidy = 4 * COIN;
+          nSubsidy = 500 * COIN;
       } else if (nHeight <= 2000000 && nHeight > 1000000) {
-          nSubsidy = 3 * COIN;
+          nSubsidy = 250 * COIN;
       } else if (nHeight <= 5000000 && nHeight > 2000000) {
-          nSubsidy = 2 * COIN;
+          nSubsidy = 100 * COIN;
       } else if (nHeight <= 10000000 && nHeight > 5000000) {
+          nSubsidy = 50 * COIN;
+      } else if (nHeight <= 15000000 && nHeight > 10000000) {
           nSubsidy = 1 * COIN;
-      } else if (nHeight <= 20000000 && nHeight > 10000000) {
-          nSubsidy = 0.5 * COIN;
       } else {
           nSubsidy = 0.1 * COIN;
-    }
+      }
 
+      // Check if we reached the coin max supply.
+  	int64_t nMoneySupply = chainActive.Tip()->nMoneySupply;
+
+    if (nMoneySupply + nSubsidy >= Params().MaxMoneyOut())
+  		nSubsidy = Params().MaxMoneyOut() - nMoneySupply;
+
+  	if (nMoneySupply >= Params().MaxMoneyOut())
+  		nSubsidy = 0;
 
   	return nSubsidy;
 
