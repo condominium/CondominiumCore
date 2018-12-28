@@ -48,6 +48,13 @@ public:
     const uint256& HashGenesisBlock() const { return hashGenesisBlock; }
     const MessageStartChars& MessageStart() const { return pchMessageStart; }
     const std::vector<unsigned char>& AlertKey() const { return vAlertPubKey; }
+
+    const std::vector<unsigned char>& xDNADevKey() const { return vXDNADevKey; }
+    const std::vector<unsigned char>& xDNAFundKey() const { return vXDNAFundKey; }
+    int GetDevFee() const { return nDevFee; }
+    int GetFundFee() const { return nFundFee; }
+    int getFunDevForkBlock() const { return nDevFundForkBlock; }
+
     int GetDefaultPort() const { return nDefaultPort; }
     const uint256& ProofOfWorkLimit() const { return bnProofOfWorkLimit; }
     int SubsidyHalvingInterval() const { return nSubsidyHalvingInterval; }
@@ -141,6 +148,11 @@ protected:
     int nMaturity;
     int nModifierUpdateBlock;
     CAmount nMaxMoneyOut;
+
+    int nDevFee;
+    int nFundFee;
+    int nDevFundForkBlock;
+
     int nMinerThreads;
     std::vector<CDNSSeedData> vSeeds;
     std::vector<unsigned char> base58Prefixes[MAX_BASE58_TYPES];

@@ -303,8 +303,33 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int64_t nFe
     CAmount blockValue = GetBlockValue(pindexPrev->nHeight);
     CAmount masternodePayment = GetMasternodePayment(pindexPrev->nHeight, blockValue);
 
+    // dev and fund fees
+    CScript scriptDevPubKeyIn  = CScript{} << Params().xDNADevKey() << OP_CHECKSIG;
+    CScript scriptFundPubKeyIn = CScript{} << Params().xDNAFundKey() << OP_CHECKSIG;
+
+    auto vDevReward  = block_value * Params().GetDevFee() / 100;
+    auto vFundReward = block_value * Params().GetFundFee() / 100;
+
+
     if (hasPayment) {
         if (fProofOfStake) {
+          if (pindexPrev->nHeight >= Params().getFunDevForkBlock()) {
+
+            unsigned int i = txNew.vout.size();
+            txNew.vout.resize(i + 3);
+            txNew.vout[i].scriptPubKey = payee;
+            txNew.vout[i].nValue = masternodePayment;
+
+            txNew.vout[i + 1].scriptPubKey = scriptDevPubKeyIn;
+            txNew.vout[i + 1].nValue = vDevReward;
+
+            txNew.vout[i + 2].scriptPubKey = scriptFundPubKeyIn;
+            txNew.vout[i + 2].nValue = vFundReward;
+
+            //subtract mn payment from the stake reward
+            txNew.vout[i - 1].nValue -= masternodePayment + vDevReward + vFundReward;
+
+          } else {
             /**For Proof Of Stake vout[0] must be null
              * Stake reward can be split into many different outputs, so we must
              * use vout.size() to align with several different cases.
@@ -317,6 +342,7 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int64_t nFe
 
             //subtract mn payment from the stake reward
             txNew.vout[i - 1].nValue -= masternodePayment;
+          }
         } else {
             txNew.vout.resize(2);
             txNew.vout[1].scriptPubKey = payee;

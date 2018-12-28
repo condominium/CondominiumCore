@@ -3919,6 +3919,52 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
                 return state.DoS(100, error("CheckBlock() : more than one coinstake"));
     }
 
+    // check for dev and fund payments
+                int dnHeight = 0;
+                CBlockIndex* dpindexPrev = chainActive.Tip();
+                if (!dpindexPrev)
+                    dnHeight = 0;
+                else
+                    if (dpindexPrev->GetBlockHash() == block.hashPrevBlock)
+                        dnHeight = dpindexPrev->nHeight + 1;
+
+                if(dnHeight >= Params().getFunDevForkBlock()) { // exclude premine
+                    // The first transaction must have Fund and Dev scripts.
+                    CScript scriptDevPubKeyIn  = CScript() << Params().xDNADevKey() << OP_CHECKSIG;
+                    CScript scriptFundPubKeyIn = CScript() << Params().xDNAFundKey() << OP_CHECKSIG;
+                    CTxDestination DevAddress;
+                    CTxDestination FundAddress;
+                    ExtractDestination(scriptDevPubKeyIn, DevAddress);
+                    ExtractDestination(scriptFundPubKeyIn, FundAddress);
+
+                if (block.vtx[0].vout.size() < 3)
+                    return state.DoS(100, error("CheckBlock() : coinbase do not have the dev or fund reward."),
+                    REJECT_INVALID, "bad-cb-reward-missing");
+
+                int FoudIndex = -1;
+                int DevIndex = -1;
+
+                for (unsigned int indx = 0; indx < block.vtx[0].vout.size(); ++indx) {
+                    CTxDestination tmp_address;
+                    ExtractDestination(block.vtx[0].vout[indx].scriptPubKey, tmp_address);
+                    if (tmp_address == DevAddress)
+                        DevIndex = indx;
+                    if (tmp_address == FundAddress)
+                        FoudIndex = indx;
+                }
+
+                if(FoudIndex == -1 || DevIndex == -1)
+                    return state.DoS(100, error("CheckBlock() : coinbase do not have the dev or fund reward (vout)."),
+                    REJECT_INVALID, "bad-cb-reward-missing");
+
+                CAmount block_value = GetBlockValue(dnHeight, block.nTime);
+
+                if (block.vtx[0].vout[DevIndex].nValue < block_value * Params().GetDevFee() / 100 || block.vtx[0].vout[FoudIndex].nValue < block_value * Params().GetFundFee() / 100)
+                    return state.DoS(100, error("CheckBlock() : coinbase do not have the enough reward for dev or fund."),
+                    REJECT_INVALID, "bad-cb-reward-invalid");
+
+            }
+
     // ----------- swiftTX transaction scanning -----------
     if (IsSporkActive(SPORK_3_SWIFTTX_BLOCK_FILTERING)) {
         BOOST_FOREACH (const CTransaction& tx, block.vtx) {
