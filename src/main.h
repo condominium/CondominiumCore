@@ -108,25 +108,29 @@ inline int64_t GetMstrNodCollateral(int nHeight){
       {
         return 100000;
       }
-      else if(nHeight >= 300000 && nHeight < 500000)
+      else if(nHeight >= 300000 && nHeight < 330000)
+      {
+        return 250000;
+      }
+      else if(nHeight >= 330000 && nHeight < 500000) // dev fund fork start at 330k
       {
         return 250000;
       }
       else if(nHeight >= 500000 && nHeight < 1000000)
       {
-        return 300000;
+        return 500000;
       }
       else if(nHeight >= 1000000 && nHeight < 2000000)
       {
-        return 400000;
+        return 750000;
       }
       else if(nHeight >= 2000000 && nHeight < 5000000)
       {
-        return 500000;
+        return 800000;
       }
       else if(nHeight >= 5000000 && nHeight < 10000000)
       {
-        return 750000;
+        return 900000;
       }
       else
       {

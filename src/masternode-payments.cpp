@@ -307,8 +307,8 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int64_t nFe
     CScript scriptDevPubKeyIn  = CScript{} << Params().xDNADevKey() << OP_CHECKSIG;
     CScript scriptFundPubKeyIn = CScript{} << Params().xDNAFundKey() << OP_CHECKSIG;
 
-    auto vDevReward  = block_value * Params().GetDevFee() / 100;
-    auto vFundReward = block_value * Params().GetFundFee() / 100;
+    auto vDevReward  = blockValue * Params().GetDevFee() / 100;
+    auto vFundReward = blockValue * Params().GetFundFee() / 100;
 
 
     if (hasPayment) {
@@ -356,8 +356,25 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int64_t nFe
 
         LogPrint("masternode","Masternode payment of %s to %s\n", FormatMoney(masternodePayment).c_str(), address2.ToString().c_str());
     } else {
-		if (!fProofOfStake)
+		if (!fProofOfStake) {
 			txNew.vout[0].nValue = blockValue - masternodePayment;
+    } else {
+      if (pindexPrev->nHeight >= Params().getFunDevForkBlock()) {
+
+        unsigned int i = txNew.vout.size();
+        txNew.vout.resize(i + 2);
+
+        txNew.vout[i].scriptPubKey = scriptDevPubKeyIn;
+        txNew.vout[i].nValue = vDevReward;
+
+        txNew.vout[i + 1].scriptPubKey = scriptFundPubKeyIn;
+        txNew.vout[i + 1].nValue = vFundReward;
+
+        //subtract mn payment from the stake reward
+        txNew.vout[i - 1].nValue -= vDevReward + vFundReward;
+
+      }
+    }
 	}
 }
 

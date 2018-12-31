@@ -54,13 +54,12 @@ static void convertSeed6(std::vector<CAddress>& vSeedsOut, const SeedSpec6* data
 // + Contains no strange transactions
 static Checkpoints::MapCheckpoints mapCheckpoints =
     boost::assign::map_list_of
-    // (0, uint256("0x000003f46e57c04e31374710022a6685abea12cb99960dfe96eaaa430edc670f"));
-    (0, uint256("0x"));
+    (0, uint256("0x000003f46e57c04e31374710022a6685abea12cb99960dfe96eaaa430edc670f"))
+    (300000, uint256("f7103491cd9a97e316ec101db5fbb163912d2a4d33d5c661f81b28dda3997141"));
 static const Checkpoints::CCheckpointData data = {
     &mapCheckpoints,
-    //1527974340, // * UNIX timestamp of last checkpoint block
-    1546032457,
-    0,    // * total number of transactions between genesis and last checkpoint
+    1546189624, // * UNIX timestamp of last checkpoint block
+    738113,    // * total number of transactions between genesis and last checkpoint
                 //   (the tx=... number in the SetBestChain debug.log lines)
     2000        // * estimated number of transactions per day after checkpoint
 };
@@ -116,29 +115,24 @@ public:
         nToCheckBlockUpgradeMajority = 1000;
         nMinerThreads = 0;
         nTargetTimespan = 1 * 30; // Condominium: 0.5 minutes
-        //nTargetSpacingSlowLaunch = 10 * 60;  // Condominium: 10 minutes (Slow launch - Block 288)
-        nTargetSpacingSlowLaunch = 1 * 60;
+        nTargetSpacingSlowLaunch = 10 * 60;  // Condominium: 10 minutes (Slow launch - Block 288)
         nTargetSpacing = 1 * 60;  // Condominium: 60 Seconds
-        //nMaturity = 49;
-        nMaturity = 10;
+        nMaturity = 49;
         nMasternodeCountDrift = 20;
         nMaxMoneyOut = 3500000000 * COIN;
-
-        vXDNADevKey = ParseHex("022168bed33339fdc945077c9056a42ceacda589b9d2c7733a72e75e7ee29ef586"); // DevPubKey for fees
-        vXDNAFundKey = ParseHex("03b7a94485bb264d12fbffdddff462060e51a27e55f256b62648c25c1fb8bb565c"); // FundPubKey for fees
-        nDevFee = 2; // DevFee %2
-        nFundFee = 8; //FundFee %8
-        nDevFundForkBlock = 310000; // block that start paying dev and fund %
+        
+        vCDMDevKey = ParseHex("03236be0c5e0be063bf3dc46f13e818933f08b617de66a777e2410b06d9bf5982e"); // DevPubKey for fees
+        vCDMFundKey = ParseHex("0251c02ab1e348837bd631749d58fd5b982a02cc0ca0e02ab5202b42a5a4ed1240"); // FundPubKey for fees
+        nDevFee = 1; // DevFee %1
+        nFundFee = 9; //FundFee %9
+        nDevFundForkBlock = 330000; // block that start paying dev and fund %
 
         /** Height or Time Based Activations **/
-        //nLastPOWBlock = 600;
-        nLastPOWBlock = 200;
+        nLastPOWBlock = 600;
         nModifierUpdateBlock = 999999999;
-        //nZerocoinStartHeight = 601;
-        nZerocoinStartHeight = 201;
+        nZerocoinStartHeight = 601;
         nAccumulatorStartHeight = 1;
-        //nZerocoinStartTime = 1527974340; // 14 - apr - 2018
-        nZerocoinStartTime = 1546032457;
+        nZerocoinStartTime = 1527974340; // 14 - apr - 2018
         nBlockEnforceSerialRange = 1; //Enforce serial range starting this block
         nBlockRecalculateAccumulators = ~1; //Trigger a recalculation of accumulators
         nBlockFirstFraudulent = ~1; //First block that bad serials emerged
@@ -166,49 +160,16 @@ public:
         genesis.hashPrevBlock = 0;
         genesis.hashMerkleRoot = genesis.BuildMerkleTree();
         genesis.nVersion = 1;
-        //genesis.nTime = 1527974340;
-        genesis.nTime = 1546032457;
+        genesis.nTime = 1527974340;
         genesis.nBits = 0x1e0ffff0;
-        //genesis.nNonce = 236551;
-        genesis.nNonce = 0;
+        genesis.nNonce = 236551;
 
-        if (true && genesis.GetHash() != hashGenesisBlock)
-        {
-            printf("Searching for genesis block...\n");
-            uint256 hashTarget = bnProofOfWorkLimit.SetCompact(genesis.nBits);
-            uint256 thash;
-
-            while (true)
-            {
-                thash = genesis.GetHash();
-                if (thash <= hashTarget)
-                    break;
-                if ((genesis.nNonce & 0xFFF) == 0)
-                {
-                    printf("nonce %08X: hash = %s (target = %s)\n", genesis.nNonce, thash.ToString().c_str(), hashTarget.ToString().c_str());
-                }
-                ++genesis.nNonce;
-                if (genesis.nNonce == 0)
-                {
-                  printf("NONCE WRAPPED, incrementing time\n");
-                    ++genesis.nTime;
-                }
-            }
-            printf("genesis.nTime = %u \n", genesis.nTime);
-            printf("genesis.nNonce = %u \n", genesis.nNonce);
-          printf("genesis.nVersion = %u \n", genesis.nVersion);
-            printf("genesis.GetHash = %s\n", genesis.GetHash().ToString().c_str()); //first this, then comment this line out and uncomment the one under.
-          printf("genesis.hashMerkleRoot = %s \n", genesis.hashMerkleRoot.ToString().c_str()); //improvised. worked for me, to find merkle root
-
-        }
         hashGenesisBlock = genesis.GetHash();
-        // assert(hashGenesisBlock == uint256("0x000003f46e57c04e31374710022a6685abea12cb99960dfe96eaaa430edc670f"));
-        // assert(genesis.hashMerkleRoot == uint256("0x90d274dca16659997d8f5fc9644127d260087d4a39ca61ba9b3334482aa8c55d"));
-        assert(hashGenesisBlock == uint256("0x"));
-        assert(genesis.hashMerkleRoot == uint256("0x"));
+        assert(hashGenesisBlock == uint256("0x000003f46e57c04e31374710022a6685abea12cb99960dfe96eaaa430edc670f"));
+        assert(genesis.hashMerkleRoot == uint256("0x90d274dca16659997d8f5fc9644127d260087d4a39ca61ba9b3334482aa8c55d"));
 
-    		  // vSeeds.push_back(CDNSSeedData("seed1.cdmcoin.org", "seed1.cdmcoin.org"));             // seed1
-          // vSeeds.push_back(CDNSSeedData("seed2.cdmcoin.org", "seed2.cdmcoin.org"));             // seed2
+    		  vSeeds.push_back(CDNSSeedData("seed1.cdmcoin.org", "seed1.cdmcoin.org"));             // seed1
+          vSeeds.push_back(CDNSSeedData("seed2.cdmcoin.org", "seed2.cdmcoin.org"));             // seed2
 
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 28); // C
@@ -235,8 +196,7 @@ public:
         //strSporkKey = "0459eede7626441f7802af2736cb3a4aeb3e1f95070cde39d068a4f16525ee8fdd3c075f29f9e115aeb91952239194aa6ac19765574fed8a0d7f174f2b450e9630";
 		    strSporkKey = "03d1a6656a67f078d52791b51ea8e246b3b542b22ebaa15e55c0ba3453b74e01f5";
         strObfuscationPoolDummyAddress = "CaJAo1A7gPBftYSHywtBN7XRfHTWWQeJm4";
-        //nStartMasternodePayments = 1527974340 + 6000; //Wed, 25 Jun 2014 20:36:16 GMT
-        nStartMasternodePayments = 1546032457 + 6000;
+        nStartMasternodePayments = 1527974340 + 6000; //Wed, 25 Jun 2014 20:36:16 GMT
 
         /** Zerocoin */
         zerocoinModulus = "0xc95577b6dce0049b0a20c779af38079355abadde1a1d80c353f6cb697a7ae5a087bad39caa5798478551d0f9d91e6267716506f32412de1d19d17588765eb9502b85c6a18abdb05791cfd8b734e960281193705eeece210920cc922b3af3ceb178bf12c22eb565d5767fbf19545639be8953c2c38ffad41f3371e4aac750ac2d7bd614b3faabb453081d5d88fdbb803657a980bc93707e4b14233a2358c97763bf28f7c933206071477e8b371f229bc9ce7d6ef0ed7163aa5dfe13bc15f7816348b328fa2c1e69d5c88f7b94cee7829d56d1842d77d7bb8692e9fc7b7db059836500de8d57eb43c345feb58671503b932829112941367996b03871300f25efb5";

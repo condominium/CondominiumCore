@@ -49,8 +49,8 @@ public:
     const MessageStartChars& MessageStart() const { return pchMessageStart; }
     const std::vector<unsigned char>& AlertKey() const { return vAlertPubKey; }
 
-    const std::vector<unsigned char>& xDNADevKey() const { return vXDNADevKey; }
-    const std::vector<unsigned char>& xDNAFundKey() const { return vXDNAFundKey; }
+    const std::vector<unsigned char>& xDNADevKey() const { return vCDMDevKey; }
+    const std::vector<unsigned char>& xDNAFundKey() const { return vCDMFundKey; }
     int GetDevFee() const { return nDevFee; }
     int GetFundFee() const { return nFundFee; }
     int getFunDevForkBlock() const { return nDevFundForkBlock; }
@@ -133,6 +133,8 @@ protected:
     MessageStartChars pchMessageStart;
     //! Raw pub key bytes for the broadcast alert signing key.
     std::vector<unsigned char> vAlertPubKey;
+    std::vector<unsigned char> vCDMDevKey;
+    std::vector<unsigned char> vCDMFundKey;
     int nDefaultPort;
     uint256 bnProofOfWorkLimit;
     int nMaxReorganizationDepth;

@@ -2152,18 +2152,20 @@ int64_t GetBlockValue(int nHeight)
           nSubsidy = 4000 * COIN;
       } else if (nHeight <= 300000 && nHeight > 150000) {
           nSubsidy = 5000 * COIN;
-      } else if (nHeight <= 500000 && nHeight > 300000) {
+      } else if (nHeight <= 330000 && nHeight > 300000) {
           nSubsidy = 6000 * COIN;
+      } else if (nHeight <= 500000 && nHeight > 330000) { // dev fund fork at 330k
+          nSubsidy = 3000 * COIN;
       } else if (nHeight <= 1000000 && nHeight > 500000) {
-          nSubsidy = 500 * COIN;
+          nSubsidy = 1500 * COIN;
       } else if (nHeight <= 2000000 && nHeight > 1000000) {
-          nSubsidy = 250 * COIN;
+          nSubsidy = 300 * COIN;
       } else if (nHeight <= 5000000 && nHeight > 2000000) {
           nSubsidy = 100 * COIN;
       } else if (nHeight <= 10000000 && nHeight > 5000000) {
           nSubsidy = 50 * COIN;
-      } else if (nHeight <= 15000000 && nHeight > 10000000) {
-          nSubsidy = 1 * COIN;
+      } else if (nHeight <= 99000000 && nHeight > 10000000) {
+          nSubsidy = 25 * COIN;
       } else {
           nSubsidy = 0.1 * COIN;
       }
@@ -2188,8 +2190,10 @@ int64_t GetMasternodePayment(int nHeight, int64_t blockValue, int nMasternodeCou
 	// 90% for Masternodes from block 1000
 	if (nHeight <= 100) {
 	      ret = blockValue  / 100 * 0;               // %0
-	} else if (nHeight > 100 ) {
+	} else if (nHeight > 100 && nHeight <= Params().getFunDevForkBlock() ) {
 		  ret = blockValue  / 100 * 90;               // %90
+	} else if (nHeight > Params().getFunDevForkBlock() ) {
+		  ret = blockValue  / 100 * 75;               // %75 for masternode from block 330k
 	}
 
     return ret;
@@ -2204,7 +2208,7 @@ bool IsInitialBlockDownload()
     if (lockIBDState)
         return false;
     bool state = (chainActive.Height() < pindexBestHeader->nHeight - 24 * 6 ||
-                  pindexBestHeader->GetBlockTime() < GetTime() - 6 * 60 * 60) && chainActive.Height() > 600; // ~144 blocks behind -> 2 x fork detection time
+                  pindexBestHeader->GetBlockTime() < GetTime() - 6 * 60 * 60) && chainActive.Height() > 330000; // ~144 blocks behind -> 2 x fork detection time
     if (!state)
         lockIBDState = true;
     return state;
@@ -3928,7 +3932,7 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
                     if (dpindexPrev->GetBlockHash() == block.hashPrevBlock)
                         dnHeight = dpindexPrev->nHeight + 1;
 
-                if(dnHeight >= Params().getFunDevForkBlock()) { // exclude premine
+                if(dnHeight > Params().getFunDevForkBlock()) { // fork block for including dev and fund addresses
                     // The first transaction must have Fund and Dev scripts.
                     CScript scriptDevPubKeyIn  = CScript() << Params().xDNADevKey() << OP_CHECKSIG;
                     CScript scriptFundPubKeyIn = CScript() << Params().xDNAFundKey() << OP_CHECKSIG;
@@ -3937,16 +3941,17 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
                     ExtractDestination(scriptDevPubKeyIn, DevAddress);
                     ExtractDestination(scriptFundPubKeyIn, FundAddress);
 
-                if (block.vtx[0].vout.size() < 3)
-                    return state.DoS(100, error("CheckBlock() : coinbase do not have the dev or fund reward."),
+                if (block.vtx[1].vout.size() < 3)
+                    return state.DoS(100, error("CheckBlock() : block.vtx[1].vout.size() < 3 - payment do not have the dev or fund reward."),
                     REJECT_INVALID, "bad-cb-reward-missing");
+
 
                 int FoudIndex = -1;
                 int DevIndex = -1;
 
-                for (unsigned int indx = 0; indx < block.vtx[0].vout.size(); ++indx) {
+                for (unsigned int indx = 0; indx < block.vtx[1].vout.size(); ++indx) {
                     CTxDestination tmp_address;
-                    ExtractDestination(block.vtx[0].vout[indx].scriptPubKey, tmp_address);
+                    ExtractDestination(block.vtx[1].vout[indx].scriptPubKey, tmp_address);
                     if (tmp_address == DevAddress)
                         DevIndex = indx;
                     if (tmp_address == FundAddress)
@@ -3954,13 +3959,13 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
                 }
 
                 if(FoudIndex == -1 || DevIndex == -1)
-                    return state.DoS(100, error("CheckBlock() : coinbase do not have the dev or fund reward (vout)."),
+                    return state.DoS(100, error("CheckBlock() : FoudIndex == -1 || DevIndex == -1 - coinbase do not have the dev or fund reward (vout)."),
                     REJECT_INVALID, "bad-cb-reward-missing");
 
-                CAmount block_value = GetBlockValue(dnHeight, block.nTime);
+                CAmount block_value = GetBlockValue(dnHeight);
 
-                if (block.vtx[0].vout[DevIndex].nValue < block_value * Params().GetDevFee() / 100 || block.vtx[0].vout[FoudIndex].nValue < block_value * Params().GetFundFee() / 100)
-                    return state.DoS(100, error("CheckBlock() : coinbase do not have the enough reward for dev or fund."),
+                if (block.vtx[1].vout[DevIndex].nValue < block_value * Params().GetDevFee() / 100 || block.vtx[1].vout[FoudIndex].nValue < block_value * Params().GetFundFee() / 100)
+                    return state.DoS(100, error("CheckBlock() : block.vtx[1].vout[DevIndex].nValue < block_value coinbase do not have the enough reward for dev or fund."),
                     REJECT_INVALID, "bad-cb-reward-invalid");
 
             }
