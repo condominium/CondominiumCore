@@ -120,9 +120,9 @@ public:
         nMaturity = 49;
         nMasternodeCountDrift = 20;
         nMaxMoneyOut = 3500000000 * COIN;
-        
+
         vCDMDevKey = ParseHex("03236be0c5e0be063bf3dc46f13e818933f08b617de66a777e2410b06d9bf5982e"); // DevPubKey for fees
-        vCDMFundKey = ParseHex("0251c02ab1e348837bd631749d58fd5b982a02cc0ca0e02ab5202b42a5a4ed1240"); // FundPubKey for fees
+        vCDMFundKey = ParseHex("03d870815312819d86d07f1a5afe1556e6be01e4ee37d554b5339922c308722ffd"); // FundPubKey for fees
         nDevFee = 1; // DevFee %1
         nFundFee = 9; //FundFee %9
         nDevFundForkBlock = 330000; // block that start paying dev and fund %
